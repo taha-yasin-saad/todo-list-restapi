@@ -1,0 +1,16 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": { "ENV": "PR_DB_HOST" },
+    "database": { "ENV": "PR_DEV_DB" },
+    "user": { "ENV": "PR_DB_USER" },
+    "password": { "ENV": "PR_DB_PASSWORD" }
+  },
+  "test": {
+    "driver": "pg",
+    "host": { "ENV": "PR_DB_HOST" },
+    "database": { "ENV": "PR_TEST_DB" },
+    "user": { "ENV": "PR_DB_USER" },
+    "password": { "ENV": "PR_DB_PASSWORD" }
+  }
+}
