@@ -8,7 +8,6 @@ export type Todo = {
 };
 
 export class TodoStore {
-
   // creates a new todo list
   async create(t: Todo): Promise<Todo> {
     try {
@@ -54,6 +53,23 @@ export class TodoStore {
       throw new Error(
         `Could not update the todo list ${t.title}. Error: ${err}`
       );
+    }
+  }
+
+  // Deletes todo list by id
+  async delete(id: string): Promise<Todo> {
+    try {
+      const sql = "DELETE FROM todos WHERE id = $1 RETURNING *";
+      const conn = await Client.connect();
+      const result = await conn.query(sql, [id]);
+
+      const todo = result.rows[0];
+
+      conn.release();
+
+      return todo;
+    } catch (err) {
+      throw new Error(`Could not delete todo ${id}. Error: ${err}`);
     }
   }
 }

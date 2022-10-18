@@ -7,8 +7,8 @@ dotenv.config();
 
 const store = new TodoStore();
 
+// Creates a new Todo List
 const create = async (req: Request, res: Response) => {
-  // Create a new Todo List
   try {
     const todo: Todo = {
       title: req.body.title,
@@ -68,9 +68,21 @@ const update = async (req: Request, res: Response) => {
   }
 };
 
+// Deletes Todo List by id
+const destroy = async (req: Request, res: Response) => {
+  const deleted = await store.delete(req.params.id);
+
+  if (deleted) {
+    res.json(`Todo List ${deleted.title} Deleted Successfully`);
+  } else {
+    res.json(`This Todo List is not in the Database`);
+  }
+};
+
 const todoRoutes = (app: express.Application) => {
   app.post("/todo", create);
   app.put("/todo/:id", update);
+  app.delete("/todo/:id", destroy);
 };
 
 export default todoRoutes;
