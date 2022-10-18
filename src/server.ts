@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import todoRoutes from "./handlers/todos.handlers";
-import itemRoutes from "./handlers/items.handlers";
+import todoRoutes from "./handlers/todos.handler";
+import itemRoutes from "./handlers/items.handler";
 
 const app: express.Application = express();
 const address: string = "0.0.0.0:3000";
