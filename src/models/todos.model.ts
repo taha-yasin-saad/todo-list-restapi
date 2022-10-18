@@ -72,4 +72,24 @@ export class TodoStore {
       throw new Error(`Could not delete todo ${id}. Error: ${err}`);
     }
   }
+
+  // Update isCompleted of a Todo List by id
+  async isCompleted(t: Todo): Promise<Todo> {
+    try {
+      const conn = await Client.connect();
+      const sql = "UPDATE todos SET isCompleted = $1 WHERE id = $2 RETURNING *";
+
+      const result = await conn.query(sql, [t.isCompleted, t.id]);
+
+      const todo = result.rows[0];
+
+      conn.release();
+
+      return todo;
+    } catch (err) {
+      throw new Error(
+        `Could not assign the todo list isCompleted to ${t.isCompleted}. Error: ${err}`
+      );
+    }
+  }
 }
