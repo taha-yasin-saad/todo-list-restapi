@@ -54,9 +54,20 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
+const destroy = async (req: Request, res: Response) => {
+  const deleted = await store.delete(req.params.id);
+
+  if (deleted) {
+    res.json(`Item List ${deleted.name} Deleted Successfully`);
+  } else {
+    res.json(`This Item List is not in the Database`);
+  }
+};
+
 const itemRoutes = (app: express.Application) => {
   app.post("/todoItem", create);
   app.get("/todoItem/:id", todoItems);
+  app.delete("/todoItem/:id", destroy);
 };
 
 export default itemRoutes;

@@ -47,4 +47,21 @@ export class ItemStore {
       throw new Error(`Could not add new item ${i.name}. Error: ${err}`);
     }
   }
+
+  // deletes an item by id
+  async delete(id: string): Promise<Item> {
+    try {
+      const sql = "DELETE FROM items WHERE id = ($1)  RETURNING *";
+      const conn = await Client.connect();
+      const result = await conn.query(sql, [id]);
+
+      const item = result.rows[0];
+
+      conn.release();
+
+      return item;
+    } catch (err) {
+      throw new Error(`Could not delete item ${id}. Error: ${err}`);
+    }
+  }
 }
