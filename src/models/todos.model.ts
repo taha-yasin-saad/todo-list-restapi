@@ -8,11 +8,27 @@ export type Todo = {
 };
 
 export class TodoStore {
+  
+  // Show Todo Lists
+  async index(): Promise<Todo[]> {
+    try {
+      const conn = await Client.connect();
+      const sql = "SELECT * FROM todos";
+      const result = await conn.query(sql);
+      conn.release();
+      const todos = result.rows;
+
+      return todos;
+    } catch (err) {
+      throw new Error(`Cannot not get todos. Error: ${err}`);
+    }
+  }
+
   // creates a new todo list
   async create(t: Todo): Promise<Todo> {
     try {
       const sql =
-        "INSERT INTO todos (title, isCompleted, description) VALUES($1, $2, $3) RETURNING *";
+        "INSERT INTO todos (title, is_completed, description) VALUES($1, $2, $3) RETURNING *";
       const conn = await Client.connect();
       const result = await conn.query(sql, [
         t.title,
@@ -35,7 +51,7 @@ export class TodoStore {
     try {
       const conn = await Client.connect();
       const sql =
-        "UPDATE todos SET title = $1, isCompleted = $2, description = $3 WHERE id = $4 RETURNING *";
+        "UPDATE todos SET title = $1, is_completed = $2, description = $3 WHERE id = $4 RETURNING *";
 
       const result = await conn.query(sql, [
         t.title,
@@ -77,7 +93,8 @@ export class TodoStore {
   async isCompleted(t: Todo): Promise<Todo> {
     try {
       const conn = await Client.connect();
-      const sql = "UPDATE todos SET isCompleted = $1 WHERE id = $2 RETURNING *";
+      const sql =
+        "UPDATE todos SET is_completed = $1 WHERE id = $2 RETURNING *";
 
       const result = await conn.query(sql, [t.isCompleted, t.id]);
 

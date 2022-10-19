@@ -7,6 +7,15 @@ dotenv.config();
 
 const store = new TodoStore();
 
+
+// Show Todo Lists
+const index = async (req: Request, res: Response) => {
+  const todos = await store.index();
+
+  res.json(todos);
+};
+
+
 // Creates a new Todo List
 const create = async (req: Request, res: Response) => {
   try {
@@ -108,7 +117,7 @@ const isCompleted = async (req: Request, res: Response) => {
       if (newTodo) {
         res.json(newTodo);
       } else {
-        res.json("There is no todo lists assigned to this id"); 
+        res.json("There is no todo lists assigned to this id");
       }
     }
   } catch (err) {
@@ -118,6 +127,7 @@ const isCompleted = async (req: Request, res: Response) => {
 };
 
 const todoRoutes = (app: express.Application) => {
+  app.get("/todo", index);
   app.post("/todo", create);
   app.put("/todo/:id", update);
   app.delete("/todo/:id", destroy);
