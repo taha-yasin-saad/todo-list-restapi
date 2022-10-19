@@ -4,7 +4,7 @@ import todoRoutes from "./handlers/todos.handler";
 import itemRoutes from "./handlers/items.handler";
 
 const app: express.Application = express();
-const address: string = "0.0.0.0:3000";
+const address: string = "localhost:3000";
 
 app.use(bodyParser.json());
 
