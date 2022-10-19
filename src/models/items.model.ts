@@ -9,6 +9,21 @@ export type Item = {
 };
 
 export class ItemStore {
+  // Shows todoItems for todo list by todoId
+  async todoItems(todoId: string): Promise<Item[]> {
+    try {
+      const sql = "SELECT * FROM items WHERE todoId = ($1)";
+      const conn = await Client.connect();
+      const result = await conn.query(sql, [todoId]);
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `Cannot not find items that belongs to todo id ${todoId}. Error: ${err}`
+      );
+    }
+  }
 
   // adds a new item
   async create(i: Item): Promise<Item> {

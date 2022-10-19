@@ -7,6 +7,17 @@ dotenv.config();
 
 const store = new ItemStore();
 
+// Shows todoItems for todo list by todoId
+const todoItems = async (req: Request, res: Response) => {
+  const todoItems = await store.todoItems(req.params.id);
+
+  if (todoItems) {
+    res.json(todoItems);
+  } else {
+    res.json(`This Todo List has no items in it`);
+  }
+};
+
 // Adds Items to todo List
 const create = async (req: Request, res: Response) => {
   try {
@@ -45,6 +56,7 @@ const create = async (req: Request, res: Response) => {
 
 const itemRoutes = (app: express.Application) => {
   app.post("/todoItem", create);
+  app.get("/todoItem/:id", todoItems);
 };
 
 export default itemRoutes;
