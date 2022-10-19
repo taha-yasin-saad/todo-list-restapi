@@ -12,7 +12,7 @@ export class ItemStore {
   // Shows todoItems for todo list by todoId
   async todoItems(todoId: string): Promise<Item[]> {
     try {
-      const sql = "SELECT * FROM items WHERE todoId = ($1)";
+      const sql = "SELECT * FROM items WHERE todo_id = ($1)";
       const conn = await Client.connect();
       const result = await conn.query(sql, [todoId]);
       conn.release();
@@ -29,7 +29,7 @@ export class ItemStore {
   async create(i: Item): Promise<Item> {
     try {
       const sql =
-        "INSERT INTO items (name, isCompleted, description, todoId) VALUES($1, $2, $3, $4) RETURNING *";
+        "INSERT INTO items (name, is_completed, description, todo_id) VALUES($1, $2, $3, $4) RETURNING *";
       const conn = await Client.connect();
       const result = await conn.query(sql, [
         i.name,
@@ -53,7 +53,7 @@ export class ItemStore {
     try {
       const conn = await Client.connect();
       const sql =
-        "UPDATE items SET name = $1, isCompleted = $2, description = $3, todoId = $4 WHERE id = $5 RETURNING *";
+        "UPDATE items SET name = $1, is_completed = $2, description = $3, todo_id = $4 WHERE id = $5 RETURNING *";
 
       const result = await conn.query(sql, [
         i.name,
@@ -79,7 +79,8 @@ export class ItemStore {
   async isCompleted(i: Item): Promise<Item> {
     try {
       const conn = await Client.connect();
-      const sql = "UPDATE items SET isCompleted = $1 WHERE id = $2 RETURNING *";
+      const sql =
+        "UPDATE items SET is_completed = $1 WHERE id = $2 RETURNING *";
 
       const result = await conn.query(sql, [i.isCompleted, i.id]);
 
@@ -91,6 +92,55 @@ export class ItemStore {
     } catch (err) {
       throw new Error(
         `Could not assign the todo list's item isCompleted to ${i.isCompleted}. Error: ${err}`
+      );
+    }
+  }
+
+  // check isCompleted of a items by id
+  async checkIsCompleted(id: string) {
+    try {
+      const conn = await Client.connect();
+
+      const sqlTodoId = "SELECT todo_id as todoidval FROM items WHERE id = $1";
+
+      const resultTodoId = await conn.query(sqlTodoId, [id]);
+
+      const todoId = resultTodoId.rows[0].todoidval;
+
+      const sql =
+        "SELECT COUNT(id) FROM items WHERE todo_id = $1 AND is_completed = false";
+
+      const result = await conn.query(sql, [todoId]);
+
+      let itemsIsNotCompleted = result.rows[0];
+
+      itemsIsNotCompleted.todoId = todoId;
+
+      conn.release();
+
+      return itemsIsNotCompleted;
+    } catch (err) {
+      throw new Error(`Could find todo list's item isCompleted. Error: ${err}`);
+    }
+  }
+
+  // Update isCompleted Todolist
+  async todoIsCompleted(todoId: string): Promise<Item> {
+    try {
+      const sql =
+        "UPDATE todos SET is_completed = true WHERE id = $1 RETURNING *";
+      
+      const conn = await Client.connect();
+      const result = await conn.query(sql, [todoId]);
+
+      const todo = result.rows[0];
+
+      conn.release();
+
+      return todo;
+    } catch (err) {
+      throw new Error(
+        `Could not set item's todo to completed ${todoId}. Error: ${err}`
       );
     }
   }

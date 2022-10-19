@@ -115,6 +115,17 @@ const isCompleted = async (req: Request, res: Response) => {
       res.json(`Errors: ,${validator.errors().first()}`);
     } else {
       const newItem = await store.isCompleted(item);
+
+      // if all items completed assign it's todo list to completed
+      const itemsIsNotCompleted = await store.checkIsCompleted(req.params.id);
+
+      let itemsNotCount = Number(itemsIsNotCompleted.count);
+      let itemTodoId = String(itemsIsNotCompleted.todoId);
+
+      if (itemsNotCount < 1) {
+        await store.todoIsCompleted(itemTodoId);
+      }
+
       res.json(newItem);
     }
   } catch (err) {
