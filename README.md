@@ -35,22 +35,26 @@ This repo contains a TODO Backend Project constructing an API. To get started.
 - `PR_DB_PASSWORD={password}`
 - `ENV=dev`
 
+## Notes
+
+- You can find a Postman TodoList Endpoints collection at the folder res
+
 ## API Endpoints
 
 #### Todo List End Points
 
-- CREATE TODO : POST `localhost:3000/todo`
-- UPDATE TODO [args: todo id] : PUT `localhost:3000/todo/:id`
-- DELETE TODO [args: todo id] : DELETE `localhost:3000/todo/:id`
-- Mark Todo as completed [args: todo id] : POST `localhost:3000/todoIsCompleted/:id`
+- CREATE TODO [JSON args: title, isCompleted, description] : POST `localhost:3000/todo`
+- UPDATE TODO [params: todo id] [JSON args: title, isCompleted, description] : PUT `localhost:3000/todo/:id`
+- DELETE TODO [params: todo id] : DELETE `localhost:3000/todo/:id`
+- Mark Todo as completed [params: todo id] [JSON args: isCompleted] : POST `localhost:3000/todoIsCompleted/:id`
 
 #### Todo List Items End Points
 
-- List Todo's Items [args: todo id] : GET `localhost:3000/todoItem/:id`
-- DELETE Todo's Item [args: todo id] : DELETE `localhost:3000/todoItem/:id`
-- Add Todo's Item : POST `localhost:3000/todoItem`
-- Mark Todo's Item as completed [args: item id] : POST `localhost:3000/todoItemIsCompleted/:id`
-- Update Todo's Item [args: item id] : PUT `localhost:3000/todoItem/:id`
+- List Todo's Items [params: todo id] : GET `localhost:3000/todoItem/:id`
+- DELETE Todo's Item [params: item id] : DELETE `localhost:3000/todoItem/:id`
+- Add Todo's Item [JSON args: name, isCompleted, description, todoId] : POST `localhost:3000/todoItem`
+- Mark Todo's Item as completed [params: item id] [JSON args: isCompleted] : POST `localhost:3000/todoItemIsCompleted/:id`
+- Update Todo's Item [params: item id] [JSON args: name, isCompleted, description, todoId] : PUT `localhost:3000/todoItem/:id`
 
 ## Data Shapes
 
@@ -58,13 +62,13 @@ This repo contains a TODO Backend Project constructing an API. To get started.
 
 - id
 - title
-- isComplete
+- is_completed
 - description
-- itemId
 
 #### items
 
 - id
 - name
-- isCompeleted
+- is_compeleted
 - description
+- todo_id
