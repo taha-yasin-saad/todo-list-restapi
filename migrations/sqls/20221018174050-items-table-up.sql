@@ -3,5 +3,5 @@ CREATE TABLE items (
     name VARCHAR(150),
     isCompleted BOOLEAN,
     description text,
-    todoId bigint REFERENCES todos(id)
+    todoId bigint REFERENCES todos(id) ON DELETE CASCADE
 );
