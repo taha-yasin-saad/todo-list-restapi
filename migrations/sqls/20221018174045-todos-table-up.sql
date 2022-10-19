@@ -1,6 +1,6 @@
 CREATE TABLE todos (
     id SERIAL PRIMARY KEY,
     title VARCHAR(150),
-    isCompleted BOOLEAN,
+    is_completed BOOLEAN,
     description text
 );
