@@ -36,7 +36,7 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-// Updates Todo List items by id
+// Updates Todo List by id
 const update = async (req: Request, res: Response) => {
   try {
     const todo: Todo = {
