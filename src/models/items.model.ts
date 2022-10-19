@@ -47,6 +47,26 @@ export class ItemStore {
       throw new Error(`Could not add new item ${i.name}. Error: ${err}`);
     }
   }
+  
+  // Update isCompleted of a Todo List by id
+  async isCompleted(i: Item): Promise<Item> {
+    try {
+      const conn = await Client.connect();
+      const sql = "UPDATE items SET isCompleted = $1 WHERE id = $2 RETURNING *";
+
+      const result = await conn.query(sql, [i.isCompleted, i.id]);
+
+      const todo = result.rows[0];
+
+      conn.release();
+
+      return todo;
+    } catch (err) {
+      throw new Error(
+        `Could not assign the todo list isCompleted to ${i.isCompleted}. Error: ${err}`
+      );
+    }
+  }
 
   // deletes an item by id
   async delete(id: string): Promise<Item> {

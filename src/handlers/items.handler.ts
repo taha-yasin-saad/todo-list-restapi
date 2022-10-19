@@ -54,6 +54,38 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
+// Update isCompleted of a Todo List's item by id
+const isCompleted = async (req: Request, res: Response) => {
+  try {
+    const item: Item = {
+      id: parseInt(req.params.id),
+      name: req.body.name,
+      isCompleted: req.body.isCompleted,
+      description: req.body.description,
+      todoId: req.body.todoId,
+    };
+
+    // rules for Item List
+    const rules = {
+      id: "required",
+      isCompleted: "required|Boolean",
+    };
+
+    const validator = make(item, rules);
+
+    if (!validator.validate()) {
+      res.json(`Errors: ,${validator.errors().first()}`);
+    } else {
+      const newItem = await store.isCompleted(item);
+      res.json(newItem);
+    }
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
+// Deletes Todo List item by id
 const destroy = async (req: Request, res: Response) => {
   const deleted = await store.delete(req.params.id);
 
@@ -68,6 +100,7 @@ const itemRoutes = (app: express.Application) => {
   app.post("/todoItem", create);
   app.get("/todoItem/:id", todoItems);
   app.delete("/todoItem/:id", destroy);
+  app.put("/todoItemIsCompleted/:id", isCompleted);
 };
 
 export default itemRoutes;
