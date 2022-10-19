@@ -8,11 +8,13 @@ This repo contains a TODO Backend Project constructing an API. To get started.
 
 - clone this repo
 - run `docker compose up`
+- run `docker exec -it todo-list-restapi-db-1 /bin/sh`
 - switch to the postgres user `su postgres`
 - start psql `psql postgres`
 - in psql run the following:
 - `CREATE USER {dbUserName} WITH PASSWORD '{password}';`
 - `CREATE DATABASE {dbName};`
+- `GRANT ALL ON SCHEMA public TO {dbUserName};`
 - `\c {dbName}`
 - `GRANT ALL PRIVILEGES ON DATABASE {dbName} TO {dbUserName};`
 - to test that it is working run \dt and it should output "No relations found."
@@ -27,12 +29,11 @@ This repo contains a TODO Backend Project constructing an API. To get started.
 
 ## environment variables
 
-- `PR_DB_HOST=127.0.0.1`
+- `PR_DB_HOST=localhost`
 - `PR_DEV_DB={dbName}`
-- `PR_TEST_DB={dbTestName}`
 - `PR_DB_USER={dbUserName}`
 - `PR_DB_PASSWORD={password}`
-- `ENV={ENV : 'dev' - 'test'}`
+- `ENV=dev`
 
 ## API Endpoints
 
