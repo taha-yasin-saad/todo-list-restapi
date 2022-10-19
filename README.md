@@ -41,15 +41,15 @@ This repo contains a TODO Backend Project constructing an API. To get started.
 - CREATE TODO : POST `localhost:3000/todo`
 - UPDATE TODO [args: todo id] : PUT `localhost:3000/todo/:id`
 - DELETE TODO [args: todo id] : DELETE `localhost:3000/todo/:id`
-- Mark Todo as completed [args: todo id] : POST `localhost:3000/todo/:id`
+- Mark Todo as completed [args: todo id] : POST `localhost:3000/todoIsCompleted/:id`
 
 #### Todo List Items End Points
 
 - List Todo's Items [args: todo id] : GET `localhost:3000/todoItem/:id`
-- DELETE Todo's Item [args: todo id, item id] : DELETE `localhost:3000/todoItem/:id/:item_id`
-- Add Todo's Item [args: todo id] : POST `localhost:3000/todoItem/:id`
-- Mark Todo's Item as completed [args: todo id, item id] : POST `localhost:3000/todoItem/:id/:item_id`
-- Update Todo's Item [args: todo id, item id] : PUT `localhost:3000/todoItem/:id/:item_id`
+- DELETE Todo's Item [args: todo id] : DELETE `localhost:3000/todoItem/:id`
+- Add Todo's Item : POST `localhost:3000/todoItem`
+- Mark Todo's Item as completed [args: item id] : POST `localhost:3000/todoItemIsCompleted/:id`
+- Update Todo's Item [args: item id] : PUT `localhost:3000/todoItem/:id`
 
 ## Data Shapes
 
