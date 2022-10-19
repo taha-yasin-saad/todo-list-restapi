@@ -54,6 +54,44 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
+// Update Todo List's Item by id
+const update = async (req: Request, res: Response) => {
+  try {
+    const item: Item = {
+      id: parseInt(req.params.id),
+      name: req.body.name,
+      isCompleted: req.body.isCompleted,
+      description: req.body.description,
+      todoId: req.body.todoId,
+    };
+
+    // rules for todoItem
+    const rules = {
+      id: "required",
+      name: "required|string|min:3",
+      isCompleted: "required|Boolean",
+      description: "string|min:3",
+      todoId: "required",
+    };
+
+    const validator = make(item, rules);
+
+    if (!validator.validate()) {
+      res.json(`Errors: ,${validator.errors().first()}`);
+    } else {
+      const newTodoItem = await store.update(item);
+      if (newTodoItem) {
+        res.json(newTodoItem);
+      } else {
+        res.json("There is no todo lists assigned to this id");
+      }
+    }
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
+
 // Update isCompleted of a Todo List's item by id
 const isCompleted = async (req: Request, res: Response) => {
   try {
@@ -101,6 +139,7 @@ const itemRoutes = (app: express.Application) => {
   app.get("/todoItem/:id", todoItems);
   app.delete("/todoItem/:id", destroy);
   app.put("/todoItemIsCompleted/:id", isCompleted);
+  app.put("/todoItem/:id", update);
 };
 
 export default itemRoutes;
